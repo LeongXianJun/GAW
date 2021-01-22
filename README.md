@@ -2,7 +2,7 @@
 <!-- Logo -->
 <p align="center">
   <a href="https://github.com/LeongXianJun/GAW"> <!-- Change to the actual website after it is deployed-->
-    <img height="128" width="128" src="https://github.com/LeongXianJun/GAW/blob/main/public/logo.svg">
+    <img width="639" height="691" src="https://github.com/LeongXianJun/GAW/blob/main/public/logo.svg">
   </a>
 </p>
 
