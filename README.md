@@ -1,4 +1,10 @@
 <!-- Logo -->
+<!-- Logo -->
+<p align="center">
+  <a href="https://github.com/LeongXianJun/GAW"> <!-- Change to the actual website after it is deployed-->
+    <img height="128" width="128" src="https://github.com/LeongXianJun/GAW/raw/master/public/logo.svg">
+  </a>
+</p>
 
 <!-- Name -->
 <h1 align="center">
