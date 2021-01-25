@@ -1,7 +1,4 @@
 {
-  "editor.codeActionsOnSave": {
-    "source.fixAll.eslint": true
-  },
   "javascript.format.insertSpaceAfterOpeningAndBeforeClosingEmptyBraces": false,
   "typescript.format.insertSpaceAfterOpeningAndBeforeClosingEmptyBraces": false,
   "javascript.format.insertSpaceAfterOpeningAndBeforeClosingJsxExpressionBraces": false,

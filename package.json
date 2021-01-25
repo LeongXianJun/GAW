@@ -91,7 +91,7 @@
   },
   "lint-staged": {
     "*.{js,ts,tsx}": [
-      "eslint --fix"
+      "eslint --quiet --fix"
     ]
   }
 }
