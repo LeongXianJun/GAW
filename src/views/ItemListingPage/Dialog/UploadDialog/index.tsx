@@ -1,12 +1,16 @@
 import React, { useCallback, useMemo, useState } from 'react'
 import {
   Button,
+  Chip,
   Dialog,
   DialogActions,
   DialogContent,
   DialogProps,
   DialogTitle,
+  FormControl,
   Grid,
+  InputLabel,
+  makeStyles,
   MenuItem,
   Select,
   TextField,
@@ -22,7 +26,19 @@ type Props = {
   setClose: DialogProps['onClose']
 }
 
+const useStyles = makeStyles(() => ({
+  chips: {
+    display: 'flex',
+    flexWrap: 'wrap',
+  },
+  chip: {
+    margin: 2,
+  },
+}))
+
 const UploadDialog: React.FC<Props> = ({ open, setClose }) => {
+  const classes = useStyles()
+
   const [name, setName] = useState('')
   const [description, setDescription] = useState('')
   const [tags, setTags] = useState<string[]>([])
@@ -82,32 +98,73 @@ const UploadDialog: React.FC<Props> = ({ open, setClose }) => {
     <Dialog open={open} onClose={setClose} fullScreen={fullScreen} fullWidth maxWidth={'md'}>
       <DialogTitle>{`Upload a Game Asset`}</DialogTitle>
       <DialogContent>
-        <Grid container>
-          <Grid item sm={4}>
-            <TextField value={name} onChange={changeName} label={`Name`} fullWidth autoFocus />
-            <TextField
-              value={description}
-              onChange={changeDescription}
-              label={`Description`}
-              fullWidth
-              multiline
-              rows={3}
-            />
-            <Select value={tags} multiple onChange={changeTags}>
-              {tagsList}
-            </Select>
-            <br />
-            {/* <label htmlFor="assetFile">{`Select an asset file:`}</label> */}
-            <input type="file" id="assetFile" onChange={changeFile} />
+        <Grid container spacing={3} style={{ margin: 0 }}>
+          <Grid item container direction={`column`} sm={4} spacing={2}>
+            <Grid item>
+              <TextField value={name} onChange={changeName} label={`Name`} fullWidth variant={`outlined`} autoFocus />
+            </Grid>
+            <Grid item>
+              <TextField
+                value={description}
+                onChange={changeDescription}
+                label={`Description`}
+                fullWidth
+                variant={`outlined`}
+                multiline
+                rows={3}
+              />
+            </Grid>
+            <Grid item>
+              <FormControl variant={`outlined`} fullWidth>
+                <InputLabel id={`multiple-tags-label`}>{`Tags`}</InputLabel>
+                <Select
+                  labelId={`multiple-tags-label`}
+                  value={tags}
+                  multiple
+                  onChange={changeTags}
+                  label={`Tags`}
+                  renderValue={selected => (
+                    <div className={classes.chips}>
+                      {(selected as string[]).map(value => (
+                        <Chip key={value} label={value} className={classes.chip} />
+                      ))}
+                    </div>
+                  )}
+                  MenuProps={{
+                    PaperProps: {
+                      style: {
+                        maxHeight: 48 * 4.5 + 8,
+                        width: 250,
+                      },
+                    },
+                    anchorOrigin: {
+                      vertical: 'bottom',
+                      horizontal: 'left',
+                    },
+                    transformOrigin: {
+                      vertical: 'top',
+                      horizontal: 'left',
+                    },
+                    getContentAnchorEl: null,
+                  }}
+                >
+                  {tagsList}
+                </Select>
+              </FormControl>
+            </Grid>
           </Grid>
           <Grid item sm={8} hidden={!Boolean(file)}>
-            {`Preview`}
+            {`Preview: ${file?.name}`}
             {file && <AssetPreviewer asset={file} />}
           </Grid>
         </Grid>
       </DialogContent>
       <DialogActions>
-        <Button onClick={uploadAsset}>{`Upload`}</Button>
+        <Button variant={`contained`} component={`label`}>
+          Select File
+          <input type="file" hidden onChange={changeFile} />
+        </Button>
+        <Button variant={`contained`} color={`primary`} onClick={uploadAsset}>{`Upload`}</Button>
       </DialogActions>
     </Dialog>
   )
