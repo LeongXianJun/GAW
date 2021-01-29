@@ -1,13 +1,13 @@
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader'
 
-const Loader = (fileType: string | undefined) => {
+const Loader = (fileType: string | undefined): GLTFLoader | undefined => {
   switch (fileType) {
     case 'glb':
     case 'gltf':
       return new GLTFLoader()
     default:
-      return undefined
   }
+  return undefined
 }
 
 export default Loader

@@ -1,5 +1,6 @@
 import React, { useCallback, useEffect, useMemo, useRef } from 'react'
 import * as THREE from 'three'
+import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls'
 
 import Loader from './Loader'
 
@@ -18,15 +19,23 @@ const AssetPreviewer: React.FC<Props> = ({ asset }) => {
 
   const scene = new THREE.Scene()
   const loader = useMemo(() => Loader(fileExtension), [fileExtension])
-  const camera = new THREE.PerspectiveCamera(75, 600 / 400, 0.1, 1000)
-  const renderer = new THREE.WebGLRenderer()
+  const camera = useMemo(() => new THREE.PerspectiveCamera(75, 600 / 400, 0.1, 1000), [])
+  const renderer = useMemo(() => new THREE.WebGLRenderer(), [])
+  const controls = useMemo(() => new OrbitControls(camera, renderer.domElement), [camera, renderer])
 
   const previewRef = useRef<HTMLDivElement>(null)
 
-  const animate = () => {
-    requestAnimationFrame(animate)
-    renderer.render(scene, camera)
-  }
+  const animate = useCallback(
+    (obj: THREE.Object3D) => {
+      // animate the asset (rotate in y-axis)
+      obj.rotation.y += 0.01
+
+      requestAnimationFrame(() => animate(obj))
+      controls.update()
+      renderer.render(scene, camera)
+    },
+    [scene, camera, controls]
+  )
 
   const setupLighting = useCallback(() => {
     {
@@ -60,7 +69,6 @@ const AssetPreviewer: React.FC<Props> = ({ asset }) => {
 
         const g = new THREE.Group()
         g.add(...mesh)
-
         g.position.set(0, 0, 0)
 
         const boundingBox = new THREE.Box3().setFromObject(g)
@@ -72,12 +80,13 @@ const AssetPreviewer: React.FC<Props> = ({ asset }) => {
         camera.lookAt(g.position)
 
         scene.add(g)
+
+        animate(g)
       },
       undefined,
       err => console.log(err)
     )
 
-    animate()
     return () => {
       previewRef.current?.removeChild(renderer.domElement)
       renderer.clear()

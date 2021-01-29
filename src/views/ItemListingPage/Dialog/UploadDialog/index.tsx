@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo, useState } from 'react'
+import React, { useCallback, useEffect, useMemo, useState } from 'react'
 import {
   Button,
   Chip,
@@ -46,6 +46,15 @@ const UploadDialog: React.FC<Props> = ({ open, setClose }) => {
 
   const theme = useTheme()
   const fullScreen = useMediaQuery(theme.breakpoints.down('sm'))
+
+  useEffect(() => {
+    if (open === false) {
+      setName('')
+      setDescription('')
+      setTags([])
+      setFile(undefined)
+    }
+  }, [open])
 
   const changeName = useCallback(
     (e: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) => {
