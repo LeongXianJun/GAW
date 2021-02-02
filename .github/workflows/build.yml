@@ -6,11 +6,6 @@ name: CI
 on:
   workflow_dispatch:
   pull_request:
-    branches-ignore:
-      - 'main'
-    paths:
-      - 'src/**'
-      - 'package.json'
 
 jobs:
   build:
@@ -51,15 +46,15 @@ jobs:
     - name: Lint Check
       run: npm run lint
       
-    - name: Run Tests
-      run: npm run test:coverage
+    # - name: Run Tests
+    #   run: npm run test:coverage
 
-    - name: Upload coverage to Codecov
-      uses: codecov/codecov-action@v1
-      with:
-        token: ${{ secrets.CODECOV_TOKEN }}
+    # - name: Upload coverage to Codecov
+    #   uses: codecov/codecov-action@v1
+    #   with:
+    #     token: ${{ secrets.CODECOV_TOKEN }}
 
-#   - name: Build
-#     run: npm run build --if-present
+    # - name: Build
+    #   run: npm run build --if-present
 
-#   - name: Deploy
+    # - name: Deploy
