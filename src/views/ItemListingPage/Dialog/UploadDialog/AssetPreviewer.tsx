@@ -1,7 +1,8 @@
-import React, { useCallback, useEffect, useRef } from 'react'
+import React, { useCallback, useEffect, useMemo, useRef } from 'react'
 import * as THREE from 'three'
-import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader'
-// check loader
+import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls'
+
+import Loader from './Loader'
 
 type Props = {
   asset: File
@@ -9,17 +10,32 @@ type Props = {
 
 // https://threejsfundamentals.org/threejs/lessons/threejs-load-gltf.html
 const AssetPreviewer: React.FC<Props> = ({ asset }) => {
+  const fileExtension = asset.name.split('.').pop()
+
+  // file extension validation
+  if (!['glb', 'gltf'].includes(fileExtension ?? '')) {
+    return <>{`Selected file has invalid file extension.`}</>
+  }
+
   const scene = new THREE.Scene()
-  const loader = new GLTFLoader()
-  const camera = new THREE.PerspectiveCamera(75, 600 / 400, 0.1, 1000)
-  const renderer = new THREE.WebGLRenderer()
+  const loader = useMemo(() => Loader(fileExtension), [fileExtension])
+  const camera = useMemo(() => new THREE.PerspectiveCamera(75, 600 / 400, 0.1, 1000), [])
+  const renderer = useMemo(() => new THREE.WebGLRenderer(), [])
+  const controls = useMemo(() => new OrbitControls(camera, renderer.domElement), [camera, renderer])
 
   const previewRef = useRef<HTMLDivElement>(null)
 
-  const animate = () => {
-    requestAnimationFrame(animate)
-    renderer.render(scene, camera)
-  }
+  const animate = useCallback(
+    (obj: THREE.Object3D) => {
+      // animate the asset (rotate in y-axis)
+      obj.rotation.y += 0.01
+
+      requestAnimationFrame(() => animate(obj))
+      controls.update()
+      renderer.render(scene, camera)
+    },
+    [scene, camera, controls]
+  )
 
   const setupLighting = useCallback(() => {
     {
@@ -45,7 +61,7 @@ const AssetPreviewer: React.FC<Props> = ({ asset }) => {
     renderer.setSize(600, 400)
     setupLighting()
 
-    loader.load(
+    loader?.load(
       URL.createObjectURL(asset.slice(0)),
       gltf => {
         const mesh = gltf.scene.children
@@ -54,23 +70,25 @@ const AssetPreviewer: React.FC<Props> = ({ asset }) => {
         const g = new THREE.Group()
         g.add(...mesh)
 
-        g.position.set(0, 0, 0)
-
         const boundingBox = new THREE.Box3().setFromObject(g)
         const size = boundingBox.getSize(new THREE.Vector3())
 
-        const min = Math.abs(Math.min(size.x, size.y, size.z) * 2)
+        // recenter the asset
+        const c = boundingBox.getCenter(new THREE.Vector3())
+        g.position.set(-c.x, -c.y, -c.z)
 
+        const min = Math.abs(Math.min(size.x, size.y, size.z) * 1.5)
         camera.position.set(min, min, min)
         camera.lookAt(g.position)
 
         scene.add(g)
+
+        animate(g)
       },
       undefined,
       err => console.log(err)
     )
 
-    animate()
     return () => {
       previewRef.current?.removeChild(renderer.domElement)
       renderer.clear()
