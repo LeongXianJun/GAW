@@ -69,13 +69,15 @@ const AssetPreviewer: React.FC<Props> = ({ asset }) => {
 
         const g = new THREE.Group()
         g.add(...mesh)
-        g.position.set(0, 0, 0)
 
         const boundingBox = new THREE.Box3().setFromObject(g)
         const size = boundingBox.getSize(new THREE.Vector3())
 
-        const min = Math.abs(Math.min(size.x, size.y, size.z) * 2)
+        // recenter the asset
+        const c = boundingBox.getCenter(new THREE.Vector3())
+        g.position.set(-c.x, -c.y, -c.z)
 
+        const min = Math.abs(Math.min(size.x, size.y, size.z) * 1.5)
         camera.position.set(min, min, min)
         camera.lookAt(g.position)
 
