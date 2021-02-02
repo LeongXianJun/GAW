@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import { Button } from '@material-ui/core'
 
+import { NavBar } from '../Common'
 import { UploadDialog } from './Dialog'
 
 type Props = unknown
@@ -12,6 +13,7 @@ const ItemListingPage: React.FC<Props> = () => {
 
   return (
     <>
+      <NavBar />
       <Button onClick={toggleUploadDialog}>{`Upload`}</Button>
       <UploadDialog open={uploadOpen} setClose={() => setUploadOpen(false)} />
     </>
