@@ -18,4 +18,4 @@ const AppContainer: React.FC<Props> = ({ children }) => {
   )
 }
 
-export default AppContainer
+export default React.memo(AppContainer)

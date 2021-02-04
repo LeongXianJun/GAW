@@ -10,7 +10,7 @@ type Props = {
 
 // https://threejsfundamentals.org/threejs/lessons/threejs-load-gltf.html
 const AssetPreviewer: React.FC<Props> = ({ asset }) => {
-  const fileExtension = asset.name.split('.').pop()
+  const fileExtension = useMemo(() => asset.name.split('.').pop(), [asset])
 
   // file extension validation
   if (!['glb', 'gltf'].includes(fileExtension ?? '')) {

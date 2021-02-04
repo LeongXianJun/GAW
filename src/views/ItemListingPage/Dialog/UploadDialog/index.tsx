@@ -5,25 +5,27 @@ import {
   Dialog,
   DialogActions,
   DialogContent,
-  DialogProps,
   DialogTitle,
   FormControl,
   Grid,
+  IconButton,
   InputLabel,
   makeStyles,
   MenuItem,
   Select,
   TextField,
+  Typography,
   useMediaQuery,
   useTheme,
 } from '@material-ui/core'
+import CloseIcon from '@material-ui/icons/Close'
 
 import { tags as tagsOption } from '../../../../commons'
 import AssetPreviewer from './AssetPreviewer'
 
 type Props = {
   open: boolean
-  setClose: DialogProps['onClose']
+  setClose: () => void
 }
 
 const useStyles = makeStyles(() => ({
@@ -105,7 +107,12 @@ const UploadDialog: React.FC<Props> = ({ open, setClose }) => {
 
   return (
     <Dialog open={open} onClose={setClose} fullScreen={fullScreen} fullWidth maxWidth={'md'}>
-      <DialogTitle>{`Upload a Game Asset`}</DialogTitle>
+      <DialogTitle disableTypography style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+        <Typography variant={`h6`}>{`Upload a Game Asset`}</Typography>
+        <IconButton onClick={setClose} size={`small`}>
+          <CloseIcon />
+        </IconButton>
+      </DialogTitle>
       <DialogContent style={{ padding: 20 }}>
         <Grid container spacing={3}>
           <Grid item sm={4} container direction={`column`} spacing={2}>

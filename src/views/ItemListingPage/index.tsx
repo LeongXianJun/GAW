@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useCallback, useState } from 'react'
 import { Button } from '@material-ui/core'
 
 import { AppContainer } from '../Common'
@@ -9,12 +9,13 @@ type Props = unknown
 const ItemListingPage: React.FC<Props> = () => {
   const [uploadOpen, setUploadOpen] = useState(false)
 
-  const toggleUploadDialog = () => setUploadOpen(!uploadOpen)
+  const toggleUploadDialog = useCallback((value: boolean) => () => setUploadOpen(!value), [])
+  const closeDialog = useCallback(() => setUploadOpen(false), [setUploadOpen])
 
   return (
     <AppContainer>
-      <Button color={`primary`} variant={`contained`} onClick={toggleUploadDialog}>{`Upload`}</Button>
-      <UploadDialog open={uploadOpen} setClose={() => setUploadOpen(false)} />
+      <Button color={`primary`} variant={`contained`} onClick={toggleUploadDialog(uploadOpen)}>{`Upload`}</Button>
+      <UploadDialog open={uploadOpen} setClose={closeDialog} />
     </AppContainer>
   )
 }
