@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Button } from '@material-ui/core'
+import { Button, Container } from '@material-ui/core'
 
 import { NavBar } from '../Common'
 import { UploadDialog } from './Dialog'
@@ -14,8 +14,10 @@ const ItemListingPage: React.FC<Props> = () => {
   return (
     <>
       <NavBar />
-      <Button onClick={toggleUploadDialog}>{`Upload`}</Button>
-      <UploadDialog open={uploadOpen} setClose={() => setUploadOpen(false)} />
+      <Container>
+        <Button color={`primary`} variant={`contained`} onClick={toggleUploadDialog}>{`Upload`}</Button>
+        <UploadDialog open={uploadOpen} setClose={() => setUploadOpen(false)} />
+      </Container>
     </>
   )
 }

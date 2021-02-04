@@ -1,8 +1,21 @@
 import React, { Suspense, useMemo } from 'react'
-import { createMuiTheme, ThemeProvider } from '@material-ui/core'
+import { createMuiTheme, responsiveFontSizes, ThemeProvider } from '@material-ui/core'
 import { BrowserRouter, Switch, Route } from 'react-router-dom'
 
-const theme = createMuiTheme({})
+const theme = responsiveFontSizes(
+  createMuiTheme({
+    palette: {
+      primary: {
+        main: '#00cffa',
+      },
+      secondary: {
+        main: '#ffce38',
+      },
+      contrastThreshold: 3,
+      tonalOffset: 0.2,
+    },
+  })
+)
 
 const pages = [
   {

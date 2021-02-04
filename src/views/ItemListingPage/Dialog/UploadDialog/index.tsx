@@ -45,7 +45,7 @@ const UploadDialog: React.FC<Props> = ({ open, setClose }) => {
   const [file, setFile] = useState<File>()
 
   const theme = useTheme()
-  const fullScreen = useMediaQuery(theme.breakpoints.down('sm'))
+  const fullScreen = useMediaQuery(theme.breakpoints.down('xs'))
 
   useEffect(() => {
     if (open === false) {
@@ -106,9 +106,9 @@ const UploadDialog: React.FC<Props> = ({ open, setClose }) => {
   return (
     <Dialog open={open} onClose={setClose} fullScreen={fullScreen} fullWidth maxWidth={'md'}>
       <DialogTitle>{`Upload a Game Asset`}</DialogTitle>
-      <DialogContent>
-        <Grid container spacing={3} style={{ margin: 0 }}>
-          <Grid item container direction={`column`} sm={4} spacing={2}>
+      <DialogContent style={{ padding: 20 }}>
+        <Grid container spacing={3}>
+          <Grid item sm={4} container direction={`column`} spacing={2}>
             <Grid item>
               <TextField value={name} onChange={changeName} label={`Name`} fullWidth variant={`outlined`} autoFocus />
             </Grid>
@@ -162,9 +162,9 @@ const UploadDialog: React.FC<Props> = ({ open, setClose }) => {
               </FormControl>
             </Grid>
           </Grid>
-          <Grid item sm={8} hidden={!Boolean(file)}>
-            {`Preview: ${file?.name}`}
-            {file && <AssetPreviewer asset={file} />}
+          <Grid item sm={8} container direction={`column`} spacing={2}>
+            <Grid item>{`Preview: ${file?.name ?? `No File`}`}</Grid>
+            <Grid item>{file && <AssetPreviewer asset={file} />}</Grid>
           </Grid>
         </Grid>
       </DialogContent>
