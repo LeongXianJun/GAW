@@ -62,7 +62,6 @@ const MobileView: React.FC<Props> = ({ links }) => {
       >
         {choices}
       </Drawer>
-      <Logo width={40} height={40} />
     </>
   )
 }

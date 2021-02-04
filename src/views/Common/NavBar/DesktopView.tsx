@@ -1,8 +1,6 @@
 import React, { useMemo } from 'react'
-import { Button } from '@material-ui/core'
+import { Button, Divider } from '@material-ui/core'
 import { Link } from 'react-router-dom'
-
-import { ReactComponent as Logo } from '../../../resources/images/logo.svg'
 
 type Props = {
   links: {
@@ -24,7 +22,7 @@ const DesktopView: React.FC<Props> = ({ links }) => {
 
   return (
     <>
-      <Logo width={40} height={40} />
+      <Divider orientation="vertical" flexItem light style={{ marginLeft: 10, marginRight: 10 }} />
       {buttons}
     </>
   )
