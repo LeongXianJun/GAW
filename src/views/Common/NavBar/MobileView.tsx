@@ -3,8 +3,6 @@ import { Drawer, IconButton, Link, MenuItem } from '@material-ui/core'
 import { Link as RouterLink } from 'react-router-dom'
 import MenuIcon from '@material-ui/icons/Menu'
 
-import { ReactComponent as Logo } from '../../../resources/images/logo.svg'
-
 type Props = {
   links: {
     path: string
