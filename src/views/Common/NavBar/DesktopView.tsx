@@ -13,7 +13,7 @@ const DesktopView: React.FC<Props> = ({ links }) => {
   const buttons = useMemo(
     () =>
       links.map(({ path, label }, i) => (
-        <Button key={`link-${i}`} color={`inherit`} to={path} component={Link}>
+        <Button key={`link-${i}`} color={`inherit`} to={path} component={Link} disableFocusRipple>
           {label}
         </Button>
       )),
