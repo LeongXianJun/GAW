@@ -23,6 +23,11 @@ const pages = [
     path: '/ItemListing',
     exact: true,
   },
+  {
+    page: React.lazy(() => import('./views/LoginRegistrationPage')),
+    path: '/LoginRegistration',
+    exact: true,
+  },
 ]
 
 const App: React.FC = () => {

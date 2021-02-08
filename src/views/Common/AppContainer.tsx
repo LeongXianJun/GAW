@@ -4,7 +4,7 @@ import { Box, Container } from '@material-ui/core'
 import NavBar from './NavBar'
 
 type Props = {
-  children: React.ReactElement | React.ReactElement[]
+  children?: React.ReactElement | React.ReactElement[]
 }
 
 const AppContainer: React.FC<Props> = ({ children }) => {
