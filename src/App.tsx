@@ -1,21 +1,6 @@
 import React, { Suspense, useMemo } from 'react'
-import { createMuiTheme, responsiveFontSizes, ThemeProvider } from '@material-ui/core'
+import { createMuiTheme, responsiveFontSizes, ThemeProvider, useMediaQuery } from '@material-ui/core'
 import { BrowserRouter, Switch, Route } from 'react-router-dom'
-
-const theme = responsiveFontSizes(
-  createMuiTheme({
-    palette: {
-      primary: {
-        main: '#00cffa',
-      },
-      secondary: {
-        main: '#ffce38',
-      },
-      contrastThreshold: 3,
-      tonalOffset: 0.2,
-    },
-  })
-)
 
 const pages = [
   {
@@ -31,6 +16,28 @@ const pages = [
 ]
 
 const App: React.FC = () => {
+  const prefersDarkMode = useMediaQuery('(prefers-color-scheme: dark)')
+
+  const theme = useMemo(
+    () =>
+      responsiveFontSizes(
+        createMuiTheme({
+          palette: {
+            type: prefersDarkMode ? 'dark' : 'light',
+            primary: {
+              main: '#00cffa',
+            },
+            secondary: {
+              main: '#ffce38',
+            },
+            contrastThreshold: 3,
+            tonalOffset: 0.2,
+          },
+        })
+      ),
+    [prefersDarkMode]
+  )
+
   const views = useMemo(
     () =>
       pages.map(({ page: Page, path, ...others }) => (
