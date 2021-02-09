@@ -1,6 +1,7 @@
 import React, { useCallback, useMemo, useState } from 'react'
 import { Drawer, IconButton, Link, MenuItem } from '@material-ui/core'
 import { Link as RouterLink } from 'react-router-dom'
+
 import MenuIcon from '@material-ui/icons/Menu'
 
 type Props = {
@@ -8,9 +9,11 @@ type Props = {
     path: string
     label: string
   }[]
+  isLogin: boolean
+  logout: () => void
 }
 
-const MobileView: React.FC<Props> = ({ links }) => {
+const MobileView: React.FC<Props> = ({ links, isLogin, logout: logoutMethod }) => {
   const [drawerToggle, setDrawerToggle] = useState(false)
 
   const setToggle = useCallback(
@@ -38,6 +41,27 @@ const MobileView: React.FC<Props> = ({ links }) => {
     [links]
   )
 
+  const logout = useCallback((e: React.SyntheticEvent) => {
+    e.preventDefault()
+    logoutMethod()
+  }, [])
+
+  const logoutLink = useMemo(
+    () => (
+      <Link
+        onClick={logout}
+        {...{
+          component: RouterLink,
+          color: 'inherit',
+          style: { textDecoration: 'none' },
+        }}
+      >
+        <MenuItem>{`Logout`}</MenuItem>
+      </Link>
+    ),
+    []
+  )
+
   return (
     <>
       <IconButton
@@ -59,6 +83,7 @@ const MobileView: React.FC<Props> = ({ links }) => {
         }}
       >
         {choices}
+        {isLogin ? logoutLink : null}
       </Drawer>
     </>
   )

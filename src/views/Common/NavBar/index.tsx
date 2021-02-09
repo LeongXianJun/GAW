@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from 'react'
+import React, { useCallback, useMemo, useState } from 'react'
 import {
   AppBar,
   Avatar,
@@ -6,6 +6,7 @@ import {
   Container,
   Grid,
   Hidden,
+  MenuItem,
   Slide,
   Toolbar,
   Typography,
@@ -15,6 +16,7 @@ import {
 } from '@material-ui/core'
 import { Link } from 'react-router-dom'
 
+import AppMenu from '../AppMenu'
 import DesktopView from './DesktopView'
 import MobileView from './MobileView'
 
@@ -32,17 +34,17 @@ const NavBar: React.FC = () => {
   const fullScreen = useMediaQuery(theme.breakpoints.down('xs'))
   const trigger = useScrollTrigger()
 
-  const [isLogin] = useState(false)
+  const [isLogin, setIsLogin] = useState(true)
+
+  const logout = useCallback(() => setIsLogin(false), [setIsLogin])
 
   const RightContent = useMemo(() => {
     if (isLogin) {
-      return <Link to={`/LoginRegistration`}>{`Login / Register`}</Link>
-    } else {
-      return (
+      const Label = () => (
         <Grid container spacing={1} alignItems={`center`}>
           <Hidden xsDown>
             <Grid item>
-              <Typography>{`Name`}</Typography>
+              <Typography style={{ textTransform: 'none' }}>{`Name`}</Typography>
             </Grid>
           </Hidden>
           <Grid item>
@@ -50,8 +52,16 @@ const NavBar: React.FC = () => {
           </Grid>
         </Grid>
       )
+
+      return (
+        <AppMenu label={<Label />} disabled={fullScreen}>
+          <MenuItem onClick={logout}>{`Logout`}</MenuItem>
+        </AppMenu>
+      )
+    } else {
+      return <Link to={`/LoginRegistration`}>{`Login / Register`}</Link>
     }
-  }, [isLogin])
+  }, [isLogin, fullScreen])
 
   return (
     <>
@@ -59,7 +69,7 @@ const NavBar: React.FC = () => {
         <AppBar>
           <Container>
             <Toolbar disableGutters>
-              {fullScreen && <MobileView links={links} />}
+              {fullScreen && <MobileView links={links} isLogin={isLogin} logout={logout} />}
               <Logo width={40} height={40} />
               <Typography variant="h6">{`GAW`}</Typography>
               {!fullScreen && <DesktopView links={links} />}
