@@ -30,7 +30,7 @@ const LoginPart: React.FC<Props> = ({ size }) => {
     focus: false,
   })
 
-  const cover = useMemo(() => <Typography>{`Login`}</Typography>, [])
+  const cover = useMemo(() => <Typography variant={`h4`} style={{ color: `white` }}>{`Login`}</Typography>, [])
 
   const changeEmail = useCallback(
     (e: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) =>
@@ -50,7 +50,13 @@ const LoginPart: React.FC<Props> = ({ size }) => {
 
   return (
     <Grid item xs={12} md={5}>
-      <HoverBox cover={cover} focus={state.focus} direction={`right`} size={size}>
+      <HoverBox
+        cover={cover}
+        focus={state.focus}
+        direction={`right`}
+        size={size}
+        background={`https://www.freegreatpicture.com/files/168/9936-game-scene-wallpaper.jpg`}
+      >
         <Box className={styles['form']}>
           <Typography variant={`h4`}>{`Sign In`}</Typography>
           <TextField

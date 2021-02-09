@@ -30,7 +30,7 @@ const RegistrationPart: React.FC<Props> = ({ size }) => {
     focus: false,
   })
 
-  const cover = useMemo(() => <Typography>{`Join us`}</Typography>, [])
+  const cover = useMemo(() => <Typography variant={`h4`} style={{ color: 'white' }}>{`Join us`}</Typography>, [])
 
   const changeEmail = useCallback(
     (e: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) =>
@@ -50,7 +50,13 @@ const RegistrationPart: React.FC<Props> = ({ size }) => {
 
   return (
     <Grid item xs={12} md={5}>
-      <HoverBox cover={cover} focus={state.focus} direction={`right`} size={size}>
+      <HoverBox
+        cover={cover}
+        focus={state.focus}
+        direction={`left`}
+        size={size}
+        background={`https://images4.alphacoders.com/253/253806.jpg`}
+      >
         <Box className={styles['form']}>
           <Typography variant={`h4`}>{`Create an Account`}</Typography>
           <TextField

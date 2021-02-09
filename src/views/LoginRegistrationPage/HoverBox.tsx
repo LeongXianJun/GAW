@@ -7,6 +7,7 @@ type Props = {
   focus: boolean
   direction?: SlideProps['direction']
   size?: number
+  background?: string
 }
 
 const useStyles = makeStyles(theme => ({
@@ -43,7 +44,7 @@ const useStyles = makeStyles(theme => ({
   },
 }))
 
-const HoverBox: React.FC<Props> = ({ cover: coverContent, children, focus, direction = 'down', size }) => {
+const HoverBox: React.FC<Props> = ({ cover: coverContent, children, focus, direction = 'down', size, background }) => {
   const styles = useStyles()
   const [hovered, setHovered] = useState(false)
 
@@ -51,7 +52,14 @@ const HoverBox: React.FC<Props> = ({ cover: coverContent, children, focus, direc
 
   return (
     <Paper elevation={3} style={{ height: size }} onMouseEnter={hovering(true)} onMouseLeave={hovering(false)}>
-      <Box className={styles['cover']} style={{ filter: focus || hovered ? 'blur(2px)' : undefined }}>
+      <Box
+        className={styles['cover']}
+        style={{
+          filter: focus || hovered ? 'blur(2px)' : undefined,
+          backgroundImage: `url("${background}")`,
+          backgroundSize: 'cover',
+        }}
+      >
         {coverContent}
       </Box>
       <Box
