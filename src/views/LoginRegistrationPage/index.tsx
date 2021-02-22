@@ -1,6 +1,5 @@
 import React, { useMemo } from 'react'
 import { Divider, Grid, Typography, useMediaQuery, useTheme } from '@material-ui/core'
-
 import { AppContainer } from '../Common'
 import LoginPart from './LoginPart'
 import RegistrationPart from './RegistrationPart'
@@ -9,6 +8,7 @@ import { useWidth } from '../../commons'
 type Props = unknown
 
 const LoginResgitrationPage: React.FC<Props> = () => {
+  // add redirect if it is login
   const theme = useTheme()
   const fullScreen = useMediaQuery(theme.breakpoints.down(`sm`))
   const widthSize = useWidth()
